@@ -50,6 +50,11 @@ public class EmployeeService {
 	public void deleteEMp(int empid) {
 		emRepository.deleteById(empid);
 	}
+	
+	public Optional<Employee> getEmpByEmail(String email){
+		Optional<Employee> employee=emRepository.findEmployeeByEmail(email);
+		return employee;
+	}
 
 //	public Page<Employee> getEMpByPaginate(int currentPage, int size) {
 //		Page p =(Page) PageRequest.of(currentPage, size);

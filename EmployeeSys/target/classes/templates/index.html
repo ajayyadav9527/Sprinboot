@@ -41,12 +41,12 @@
 	</nav>
 
 	<!-- Navbar -->
-<!-- 
-	<div th:if=${session.msg!=null}>
+
+	<div th:if=${session.msg} class=>
 		<div class="alert alert-success" role="alert" th:text="${session.msg}">
 		</div>
-		<th:block th:text="${#session.removeAttribute('msg')}"></th:block>
-	</div> -->
+	  <!-- <th:block th:text="${session.removeAttribute('msg')}"></th:block> -->
+	</div> 
 
 
 	<div class="container p-5">
@@ -72,7 +72,7 @@
 					<td th:text="${e.phno}"></td>
 					<td th:text="${e.salary}"></td>
 					<td><a class="btn btn-sm btn-primary"
-						th:href="@{/edit/{empid}(id=${e.empid})}">Edit</a> <a
+						th:href="@{/edit/{id}(id=${e.empid})}">Edit</a> <a
 						class="btn btn-sm btn-danger"
 						th:href="@{/delete/{id}(id=${e.empid})}">Delete</a></td>
 				</tr>

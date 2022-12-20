@@ -1,11 +1,13 @@
 package com.employee.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -45,11 +47,21 @@ public class EmpController {
 	
 
 	@PostMapping("/register")
-	public String empReg(@ModelAttribute Employee e, HttpSession session) {
-		emService.addEmp(e);
-		session.setAttribute("msg", "Employee Added Successfully..");
-		
-		return "redirect:/";
+	public String empReg(@ModelAttribute Employee e, BindingResult result1,HttpSession session) {
+		if(emService.getEmpByEmail(e.getEmail()).isPresent()) {
+			System.out.println("Employee is already present..");
+			return "redirect:/addemp";
+		}
+	
+		if(!result1.hasErrors()){
+			emService.addEmp(e);
+			session.setAttribute("msg", "Employee Added Successfully..");
+			
+			return "redirect:/";
+			
+		}
+		return "redirect:/addemp";
+
 	}
 	
 
@@ -61,21 +73,26 @@ public class EmpController {
 //		return "edit";
 //	}
 	
+
 	
 	@GetMapping("/edit/{empid}")
 	public String edit(@PathVariable int empid, Model m) {
-		Employee e= emService.getEMpById(empid);
-		m.addAttribute(e);
-		
+		Employee e = emService.getEMpById(empid);
+		m.addAttribute("emp", e);
 		return "edit";
 	}
 
 
 	@PostMapping("/update")
-	public String updateEmp(@ModelAttribute Employee e, HttpSession session) {
-		emService.addEmp(e);
-		session.setAttribute("msg", "Emp Data Update Sucessfully..");
-		return "redirect:/";
+	public String updateEmp(@ModelAttribute Employee e, BindingResult result1, HttpSession session) {
+		if(!result1.hasErrors()) {
+			emService.addEmp(e);
+			session.setAttribute("msg", "Emp Data Update Sucessfully..");
+			
+			return "redirect:/";
+		}
+		return "redirect:/edit";
+
 	}
 
 	@GetMapping("/delete/{empid}")
@@ -85,6 +102,9 @@ public class EmpController {
 		session.setAttribute("msg", "Emp Data Delete Sucessfully..");
 		return "redirect:/";
 	}
+	
+	
+	
 
 //	@GetMapping("/page/{pageno}")
 //	public String findPaginated(@PathVariable int pageno, Model m) {

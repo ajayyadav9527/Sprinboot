@@ -2,11 +2,13 @@ package com.employee.entities;
 
 
 
+import jakarta.annotation.Nonnull;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+;
 
 @Entity
 public class Employee {
@@ -17,6 +19,7 @@ public class Employee {
 	
 	private String name;
 	private String address;
+	@Nonnull
 	@Column(unique = true)
 	private String email;
 	private int salary;
